@@ -38,7 +38,7 @@ services:
       JWT_EXPIRATION: ${JWT_EXPIRATION}
       SWAPI_BASE_URL: ${SWAPI_BASE_URL}
       SWAPI_TIMEOUT: ${SWAPI_TIMEOUT}
-      NODE_ENV: production
+      NODE_ENV: development
     depends_on:
       postgres:
         condition: service_healthy

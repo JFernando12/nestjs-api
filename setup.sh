@@ -1,6 +1,10 @@
 #!/bin/bash
 set -e
 
-cp .env.example .env
-docker-compose up -d --build
-docker-compose logs -f
+if [ ! -f .env ]; then 
+    cp .env.example .env
+fi
+
+docker compose down -v 2>/dev/null || true
+docker compose up -d --build
+docker compose logs -f
