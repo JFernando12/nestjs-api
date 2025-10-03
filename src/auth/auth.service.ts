@@ -1,4 +1,8 @@
-import { Injectable, UnauthorizedException, ConflictException } from '@nestjs/common';
+import {
+  Injectable,
+  UnauthorizedException,
+  ConflictException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { UsersService } from '../users/users.service';
@@ -13,7 +17,9 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signUp(signUpDto: SignUpDto): Promise<{ access_token: string; user: any }> {
+  async signUp(
+    signUpDto: SignUpDto,
+  ): Promise<{ access_token: string; user: any }> {
     // Check if user already exists
     const existingUser = await this.usersService.findOne(signUpDto.username);
     if (existingUser) {
@@ -40,18 +46,24 @@ export class AuthService {
     const payload = { sub: user.id, username: user.username, role: user.role };
     const access_token = await this.jwtService.signAsync(payload);
 
-    // Remove password from response
-    const { password, ...result } = user;
-
     return {
       access_token,
-      user: result,
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
     };
   }
 
-  async login(loginDto: LoginDto): Promise<{ access_token: string; user: any }> {
+  async login(
+    loginDto: LoginDto,
+  ): Promise<{ access_token: string; user: any }> {
     const user = await this.usersService.findOne(loginDto.username);
-    
+
     if (!user || !(await bcrypt.compare(loginDto.password, user.password))) {
       throw new UnauthorizedException('Invalid credentials');
     }
@@ -59,12 +71,16 @@ export class AuthService {
     const payload = { sub: user.id, username: user.username, role: user.role };
     const access_token = await this.jwtService.signAsync(payload);
 
-    // Remove password from response
-    const { password, ...result } = user;
-
     return {
       access_token,
-      user: result,
+      user: {
+        id: user.id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+        createdAt: user.createdAt,
+        updatedAt: user.updatedAt,
+      },
     };
   }
 }

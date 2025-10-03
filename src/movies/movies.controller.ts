@@ -77,7 +77,7 @@ export class MoviesController {
             producer: 'Gary Kurtz, Rick McCallum',
             release_date: '1977-05-25',
             swapi_id: 1,
-            swapi_url: 'https://swapi.dev/api/films/1/',
+            swapi_url: 'https://swapi.tech/api/films/1/',
             createdAt: '2025-10-02T06:00:00.000Z',
             updatedAt: '2025-10-02T06:00:00.000Z',
           },

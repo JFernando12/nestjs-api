@@ -23,8 +23,8 @@ async function bootstrap() {
     .setTitle('Movies API - Star Wars Integration')
     .setDescription(
       'API for managing movies with Star Wars integration. ' +
-      'This API includes user authentication, role-based authorization, ' +
-      'and CRUD operations for movies.',
+        'This API includes user authentication, role-based authorization, ' +
+        'and CRUD operations for movies.',
     )
     .setVersion('1.0')
     .addBearerAuth()
@@ -38,5 +38,11 @@ async function bootstrap() {
 
   const port = process.env.PORT || 3000;
   await app.listen(port);
+  console.log(`Application is running on: http://localhost:${port}`);
+  console.log(`Swagger documentation: http://localhost:${port}/api`);
 }
-bootstrap();
+
+bootstrap().catch((error) => {
+  console.error('Error starting the application:', error);
+  process.exit(1);
+});

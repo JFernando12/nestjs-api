@@ -9,6 +9,8 @@ import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from '../decorators/public.decorator';
+import { UserRole } from '../../users/entities/user.entity';
+import { JwtPayload, AuthenticatedRequest } from '../../types/auth';
 
 @Injectable()
 export class AuthGuard implements CanActivate {
@@ -23,27 +25,32 @@ export class AuthGuard implements CanActivate {
       context.getHandler(),
       context.getClass(),
     ]);
-    
+
     if (isPublic) {
       return true;
     }
 
-    const request = context.switchToHttp().getRequest();
+    const request = context.switchToHttp().getRequest<AuthenticatedRequest>();
     const token = this.extractTokenFromHeader(request);
-    
+
     if (!token) {
       throw new UnauthorizedException('Token not found');
     }
-    
+
     try {
-      const payload = await this.jwtService.verifyAsync(token, {
+      const payload = await this.jwtService.verifyAsync<JwtPayload>(token, {
         secret: this.configService.get<string>('JWT_SECRET'),
       });
-      request['user'] = payload;
+      // Crear un objeto user básico a partir del payload
+      request.user = {
+        id: payload.sub,
+        email: payload.email,
+        role: payload.role as UserRole,
+      };
     } catch {
       throw new UnauthorizedException('Invalid token');
     }
-    
+
     return true;
   }
 

@@ -17,6 +17,7 @@ import { AuthService } from './auth.service';
 import { SignUpDto } from './dto/signup.dto';
 import { LoginDto } from './dto/login.dto';
 import { Public } from './decorators/public.decorator';
+import type { RequestUser, AuthenticatedRequest } from '../types/auth';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -50,7 +51,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Get current user profile' })
   @ApiResponse({ status: 200, description: 'Returns user profile' })
   @ApiResponse({ status: 401, description: 'Unauthorized' })
-  getProfile(@Request() req) {
+  getProfile(@Request() req: AuthenticatedRequest): RequestUser {
     return req.user;
   }
 }

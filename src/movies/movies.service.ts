@@ -19,7 +19,9 @@ export class MoviesService {
     return this.moviesRepository.save(movie);
   }
 
-  async findAll(paginationDto: PaginationDto): Promise<PaginatedResponseDto<Movie>> {
+  async findAll(
+    paginationDto: PaginationDto,
+  ): Promise<PaginatedResponseDto<Movie>> {
     const { page = 1, limit = 10 } = paginationDto;
     const skip = (page - 1) * limit;
 
