@@ -1,7 +1,6 @@
-export enum UserRole {
-  USER = 'user',
-  ADMIN = 'admin',
-}
+import { UserRole } from '../../../../common/interfaces';
+
+export { UserRole };
 
 export class User {
   id: string;

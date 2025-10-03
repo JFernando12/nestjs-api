@@ -1,6 +1,6 @@
 import { Movie } from '../models/movie.model';
 import { CreateMovieDto } from '../../../movies/application/dtos/create-movie.dto';
-import { PaginationDto } from '../../../../common/interfaces/pagination.dto';
+import { PaginationDto } from '../../../../common/dtos';
 
 export interface IMovieRepository {
   create(createMovieDto: CreateMovieDto): Promise<Movie>;

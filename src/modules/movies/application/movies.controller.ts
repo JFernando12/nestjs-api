@@ -18,10 +18,10 @@ import {
 import { MoviesService } from './movies.service';
 import { CreateMovieDto } from './dtos/create-movie.dto';
 import { UpdateMovieDto } from './dtos/update-movie.dto';
-import { PaginationDto } from '../../../common/interfaces/pagination.dto';
+import { PaginationDto } from '../../../common/dtos';
 import { Roles } from '../../../shared/decorators/roles.decorator';
 import { Public } from '../../../shared/decorators/public.decorator';
-import { UserRole } from '../../users/infrastructure/entities/user.entity';
+import { UserRole } from '../../../common/interfaces';
 
 @ApiTags('Movies')
 @Controller('movies')

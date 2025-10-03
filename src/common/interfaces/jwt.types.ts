@@ -1,4 +1,4 @@
-import { UserRole } from '../../modules/users/infrastructure/entities/user.entity';
+import { UserRole } from './user.types';
 
 export interface JwtPayload {
   sub: number;

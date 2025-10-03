@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { Movie as MovieEntity } from '../entities/movie.entity';
 import { Movie } from '../../domain/models/movie.model';
 import { CreateMovieDto } from '../../application/dtos/create-movie.dto';
-import { PaginationDto } from '../../../../common/interfaces/pagination.dto';
+import { PaginationDto } from '../../../../common/dtos';
 import { IMovieRepository } from '../../domain/repositories/movie.repository';
 
 @Injectable()

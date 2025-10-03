@@ -8,8 +8,8 @@ import * as bcrypt from 'bcrypt';
 import { SignUpDto } from './dtos/signup.dto';
 import { LoginDto } from './dtos/login.dto';
 import { UsersService } from '../../users/application/users.service';
-import { UserRole } from '../../users/infrastructure/entities/user.entity';
-import { ApiResponseDto } from '../../../common/interfaces/api-response.dto';
+import { UserRole } from '../../../common/interfaces';
+import { ApiResponseDto } from '../../../common/dtos';
 
 @Injectable()
 export class AuthService {

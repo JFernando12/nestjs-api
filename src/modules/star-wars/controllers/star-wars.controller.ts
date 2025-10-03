@@ -7,7 +7,7 @@ import {
 } from '@nestjs/swagger';
 import { StarWarsService } from '../application/star-wars.service';
 import { Roles } from '../../../shared/decorators/roles.decorator';
-import { UserRole } from '../../users/infrastructure/entities/user.entity';
+import { UserRole } from '../../../common/interfaces';
 
 @ApiTags('Star Wars')
 @Controller('star-wars')

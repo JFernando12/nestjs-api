@@ -9,7 +9,7 @@ import { ConfigService } from '@nestjs/config';
 import { Request } from 'express';
 import { Reflector } from '@nestjs/core';
 import { IS_PUBLIC_KEY } from '../../shared/decorators/public.decorator';
-import { UserRole } from '../../modules/users/infrastructure/entities/user.entity';
+import { UserRole } from '../interfaces';
 import { AuthenticatedRequest, JwtPayload } from '../interfaces';
 
 @Injectable()

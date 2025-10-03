@@ -1,14 +1,14 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateMovieDto } from './dtos/create-movie.dto';
 import { UpdateMovieDto } from './dtos/update-movie.dto';
-import { PaginationDto } from '../../../common/interfaces/pagination.dto';
-import { PaginatedResponseDto } from '../../../common/interfaces/paginated-response.dto';
 import {
+  PaginationDto,
+  PaginatedResponseDto,
   CreatedResponseDto,
   UpdatedResponseDto,
   DeletedResponseDto,
   ApiResponseDto,
-} from '../../../common/interfaces/api-response.dto';
+} from '../../../common/dtos';
 import { Movie } from '../domain/models/movie.model';
 import { MoviesRepository } from '../infrastructure/repositories/movies.typeorm.repository';
 

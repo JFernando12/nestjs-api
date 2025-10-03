@@ -7,7 +7,7 @@ import {
   IsOptional,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
-import { UserRole } from '../../../users/infrastructure/entities/user.entity';
+import { UserRole } from '../../../../common/interfaces';
 
 export class SignUpDto {
   @ApiProperty({ example: 'user', description: 'Username for the new user' })
