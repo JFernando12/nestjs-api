@@ -117,15 +117,6 @@ API Swagger Documentation: `http://localhost:3000/api`
 |--------|----------|-------------|--------|
 | POST | `/star-wars/sync` | Sync films from SWAPI | Admin |
 
-### Users
-
-| Method | Endpoint | Description | Access |
-|--------|----------|-------------|--------|
-| GET | `/users` | Get users list | Admin |
-| GET | `/users/:id` | Get user details | Admin |
-| PATCH | `/users/:id` | Update user | Admin |
-| DELETE | `/users/:id` | Delete user | Admin |
-
 ## Prerequisites
 
 - Docker and Docker Compose installed
@@ -239,22 +230,29 @@ Press `Ctrl + C` to stop the app (or `docker compose down`).
 
 ## Run Tests
 
-### Using Docker
+### Unit Tests
+
+Unit tests use mocks for all dependencies (database, external APIs, etc.) and can be run locally without Docker:
+
+```bash
+npm test
+```
+
+### E2E Tests
+
+**Important:** E2E tests **require Docker** as they need a real PostgreSQL database instance. They cannot be run locally with `npm run test:e2e` unless you have PostgreSQL configured.
+
+**Using Docker (Recommended):**
 
 ```bash
 docker compose -f docker-compose.test.yml up --build --abort-on-container-exit
 docker compose -f docker-compose.test.yml down -v
 ```
 
-### Using NPM
-
-```bash
-# Unit tests
-npm test
-
-# E2E tests
-npm run test:e2e
-```
+This will:
+1. Start a PostgreSQL container
+2. Run all E2E tests against the real database
+3. Clean up containers after tests complete
 
 ## Things to Improve
 
