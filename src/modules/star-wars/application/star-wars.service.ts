@@ -26,7 +26,6 @@ export class StarWarsService {
     this.logger.log('Starting Star Wars movies synchronization...');
 
     try {
-      // Get all films from SWAPI
       const response = await firstValueFrom(
         this.httpService.get<SwapiResponse>(`${this.SWAPI_BASE_URL}/films`),
       );
@@ -40,7 +39,6 @@ export class StarWarsService {
 
       for (const filmData of films) {
         try {
-          // Get detailed information for each film
           const detailResponse = await firstValueFrom(
             this.httpService.get<SwapiFilmDetailResponse>(
               `${this.SWAPI_BASE_URL}/films/${filmData.uid}`,
@@ -49,7 +47,6 @@ export class StarWarsService {
 
           const film = detailResponse.data.result.properties;
 
-          // Validar que tenemos los datos necesarios
           if (!film.title || !film.episode_id) {
             this.logger.warn(`Missing required data for film ${filmData.uid}`);
             continue;
@@ -98,7 +95,6 @@ export class StarWarsService {
     }
   }
 
-  // Run synchronization every day at 3 AM
   @Cron(CronExpression.EVERY_DAY_AT_3AM)
   async handleCron() {
     this.logger.log('Running scheduled Star Wars movies synchronization...');

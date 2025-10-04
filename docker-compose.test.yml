@@ -1,0 +1,52 @@
+services:
+  postgres-test:
+    image: postgres:15-alpine
+    container_name: nestjs-postgres-test
+    command: postgres -c log_min_messages=FATAL -c client_min_messages=ERROR
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres123
+      POSTGRES_DB: nestjs_db_test
+    ports:
+      - '5433:5432'
+    volumes:
+      - postgres_test_data:/var/lib/postgresql/data
+    networks:
+      - nestjs-test-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d nestjs_db_test"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: nestjs-api-test
+    command: >
+      sh -c "npm run test:e2e"
+    environment:
+      DB_HOST: postgres-test
+      DB_PORT: 5432
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres123
+      DB_NAME: nestjs_db_test
+      JWT_SECRET: test_secret_key_for_testing
+      JWT_EXPIRATION: 1h
+      SWAPI_BASE_URL: https://www.swapi.tech/api
+      SWAPI_TIMEOUT: 20000
+      NODE_ENV: test
+    depends_on:
+      postgres-test:
+        condition: service_healthy
+    networks:
+      - nestjs-test-network
+
+volumes:
+  postgres_test_data:
+
+networks:
+  nestjs-test-network:
+    driver: bridge
