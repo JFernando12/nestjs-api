@@ -74,7 +74,6 @@ describe('AuthService', () => {
       usersService.findByEmail.mockResolvedValue(null);
       (bcrypt.hash as jest.Mock).mockResolvedValue(hashedPassword);
       usersService.create.mockResolvedValue(mockUser);
-      jwtService.signAsync.mockResolvedValue(mockJwtToken);
 
       const result = await authService.signUp(signUpDto);
 
@@ -87,16 +86,12 @@ describe('AuthService', () => {
         password: hashedPassword,
         role: UserRole.USER,
       });
-      expect(jwtService.signAsync).toHaveBeenCalledWith({
-        sub: mockUser.id,
-        username: mockUser.username,
-        role: mockUser.role,
-      });
+      expect(jwtService.signAsync).not.toHaveBeenCalled();
       expect(result.message).toBe('User registered successfully');
-      expect(result.data.access_token).toBe(mockJwtToken);
       expect(result.data.user.id).toBe(mockUser.id);
       expect(result.data.user.username).toBe(mockUser.username);
       expect(result.data.user.email).toBe(mockUser.email);
+      expect(result.data).not.toHaveProperty('access_token');
     });
 
     it('should throw ConflictException when username already exists', async () => {
@@ -131,7 +126,6 @@ describe('AuthService', () => {
       usersService.findByEmail.mockResolvedValue(null);
       (bcrypt.hash as jest.Mock).mockResolvedValue(hashedPassword);
       usersService.create.mockResolvedValue(mockUser);
-      jwtService.signAsync.mockResolvedValue(mockJwtToken);
 
       await authService.signUp(signUpDtoWithoutRole);
 
@@ -212,24 +206,6 @@ describe('AuthService', () => {
   });
 
   describe('edge cases', () => {
-    it('should handle JWT signing errors during signup', async () => {
-      const signUpDto: SignUpDto = {
-        username: 'newuser',
-        email: 'newuser@example.com',
-        password: 'password123',
-        role: UserRole.USER,
-      };
-      usersService.findOne.mockResolvedValue(null);
-      usersService.findByEmail.mockResolvedValue(null);
-      (bcrypt.hash as jest.Mock).mockResolvedValue('hashedPassword');
-      usersService.create.mockResolvedValue(mockUser);
-      jwtService.signAsync.mockRejectedValue(new Error('JWT signing failed'));
-
-      await expect(authService.signUp(signUpDto)).rejects.toThrow(
-        'JWT signing failed',
-      );
-    });
-
     it('should handle JWT signing errors during login', async () => {
       const loginDto: LoginDto = {
         username: 'testuser',
