@@ -167,6 +167,7 @@ API Swagger Documentation: `http://localhost:3000/api`
 
 ## Prerequisites
 
+- **Node.js 20 or higher** (if running without Docker)
 - Docker and Docker Compose installed
 - Git (for cloning the repository)
 - PowerShell (Windows) or Bash (Linux/Mac)
@@ -210,9 +211,10 @@ docker compose down
 
 ### Using NPM (Without Docker)
 
-1. Install PostgreSQL locally
-2. Create database
-3. Install dependencies:
+1. **Ensure Node.js 20 or higher is installed**
+2. Install PostgreSQL locally
+3. Create database
+4. Install dependencies:
 ```bash
 npm install
 ```
