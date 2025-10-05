@@ -209,7 +209,7 @@ curl -X POST http://localhost:3000/auth/signup \
   -d '{
     "username": "admin",
     "email": "admin@example.com",
-    "password": "Admin123!",
+    "password": "Admin123",
     "role": "admin"
   }'
 ```
@@ -220,7 +220,7 @@ curl -X POST http://localhost:3000/auth/login \
   -H "Content-Type: application/json" \
   -d '{
     "email": "admin@example.com",
-    "password": "Admin123!"
+    "password": "Admin123"
   }'
 ```
 
@@ -257,8 +257,6 @@ npm run test:e2e
 ```
 
 ## Things to Improve
-
-**Response Timeout on Deployment Platforms**: Some platforms like Heroku have a 30-second HTTP timeout. The SWAPI sync completes successfully but the response times out. Could use another cloud provider like AWS EC2 (supports up to 4000 seconds timeout) or implement the async processing approach mentioned above.
 
 **Performance Monitoring**: Add logging service (Winston/Pino) and metrics dashboard for better observability.
 
