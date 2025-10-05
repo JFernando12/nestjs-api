@@ -20,7 +20,6 @@ export class AuthService {
 
   async signUp(signUpDto: SignUpDto): Promise<
     ApiResponseDto<{
-      access_token: string;
       user: {
         id: string;
         username: string;
@@ -50,11 +49,7 @@ export class AuthService {
       role: signUpDto.role || UserRole.USER,
     });
 
-    const payload = { sub: user.id, username: user.username, role: user.role };
-    const access_token = await this.jwtService.signAsync(payload);
-
     return new ApiResponseDto('User registered successfully', {
-      access_token,
       user: {
         id: user.id,
         username: user.username,

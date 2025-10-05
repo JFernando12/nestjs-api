@@ -46,7 +46,7 @@ describe('Authentication (e2e)', () => {
         .send(signupData)
         .expect(201);
 
-      expect(response.body.data).toHaveProperty('access_token');
+      expect(response.body.data).not.toHaveProperty('access_token');
       expect(response.body.data.user.username).toBe(signupData.username);
       expect(response.body.data.user.email).toBe(signupData.email);
       expect(response.body.data.user).not.toHaveProperty('password');

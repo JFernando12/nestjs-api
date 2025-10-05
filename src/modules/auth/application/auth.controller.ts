@@ -1,23 +1,9 @@
-import {
-  Controller,
-  Post,
-  Body,
-  HttpCode,
-  HttpStatus,
-  Get,
-  Request,
-} from '@nestjs/common';
-import {
-  ApiTags,
-  ApiOperation,
-  ApiResponse,
-  ApiBearerAuth,
-} from '@nestjs/swagger';
+import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 import { AuthService } from './auth.service';
 import { SignUpDto } from './dtos/signup.dto';
 import { LoginDto } from './dtos/login.dto';
 import { Public } from '../../../shared/decorators/public.decorator';
-import type { AuthenticatedRequest, RequestUser } from 'src/common/interfaces';
 
 @ApiTags('Authentication')
 @Controller('auth')
@@ -34,7 +20,6 @@ export class AuthController {
       example: {
         message: 'User registered successfully',
         data: {
-          access_token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...',
           user: {
             id: '550e8400-e29b-41d4-a716-446655440000',
             username: 'user',
@@ -79,14 +64,5 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Invalid credentials' })
   async login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
-  }
-
-  @Get('profile')
-  @ApiBearerAuth()
-  @ApiOperation({ summary: 'Get current user profile' })
-  @ApiResponse({ status: 200, description: 'Returns user profile' })
-  @ApiResponse({ status: 401, description: 'Unauthorized' })
-  getProfile(@Request() req: AuthenticatedRequest): RequestUser {
-    return req.user;
   }
 }

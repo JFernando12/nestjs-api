@@ -14,5 +14,9 @@ export default registerAs(
     synchronize:
       process.env.NODE_ENV === 'development' || process.env.NODE_ENV === 'test',
     logging: false,
+    ssl:
+      process.env.NODE_ENV === 'production'
+        ? { rejectUnauthorized: false }
+        : false,
   }),
 );

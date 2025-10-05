@@ -61,6 +61,51 @@ When syncing multiple films from SWAPI, the process can exceed 30 seconds (Herok
 - [x] Sync movies from Star Wars API (admin only)
 - [x] Unit and E2E tests
 - [x] Swagger API documentation
+- [x] CI/CD with GitHub Actions
+- [x] Automated deployment to Render.com
+
+## CI/CD and Deployment
+
+This project uses **GitHub Actions** for continuous integration and **Render.com** for automated deployment.
+
+### CI/CD Pipeline (GitHub Actions)
+
+When you push to the `main` branch, the following automated workflow runs:
+
+1. **Test Job**:
+   - Sets up Node.js 20.x
+   - Installs dependencies
+   - Runs linter (`npm run lint`)
+   - Runs unit tests with mocks (`npm run test`)
+   - Runs E2E tests with PostgreSQL (`npm run test:e2e`)
+
+2. **Build Job** (only if tests pass):
+   - Builds the application (`npm run build`)
+   - Uploads build artifacts
+
+3. **Docker Build Job** (only if tests pass):
+   - Builds the Docker image
+   - Validates the containerization
+
+### Deployment to Render
+
+The application is deployed on [Render.com](https://render.com) with intelligent deployment:
+
+- **Automatic deployments** from the `main` branch
+- **Render waits for GitHub Actions to complete** before deploying
+- **Deployment only happens if all CI/CD checks pass**
+- If tests fail in GitHub Actions, Render blocks the deployment
+- PostgreSQL database instance included
+- Zero-downtime deployments
+- HTTPS enabled by default
+
+**This ensures that only tested and verified code reaches production.**
+
+### Live Production API
+
+**Swagger Documentation**: https://nestjs-api-ci0z.onrender.com/api
+
+You can test all endpoints directly from the production Swagger interface.
 
 ## Author
 
@@ -76,6 +121,7 @@ When syncing multiple films from SWAPI, the process can exceed 30 seconds (Herok
 - [Prerequisites](#prerequisites)
 - [Run APP](#run-app)
 - [Run Tests](#run-tests)
+- [CI/CD and Deployment](#cicd-and-deployment)
 - [Things to Improve](#things-to-improve)
 
 ## Technology
@@ -88,6 +134,8 @@ When syncing multiple films from SWAPI, the process can exceed 30 seconds (Herok
 - **Testing**: Jest, Supertest
 - **Containerization**: Docker, Docker Compose
 - **Documentation**: Swagger/OpenAPI
+- **CI/CD**: GitHub Actions
+- **Deployment**: Render.com
 
 ## Routes
 
@@ -116,15 +164,6 @@ API Swagger Documentation: `http://localhost:3000/api`
 | Method | Endpoint | Description | Access |
 |--------|----------|-------------|--------|
 | POST | `/star-wars/sync` | Sync films from SWAPI | Admin |
-
-### Users
-
-| Method | Endpoint | Description | Access |
-|--------|----------|-------------|--------|
-| GET | `/users` | Get users list | Admin |
-| GET | `/users/:id` | Get user details | Admin |
-| PATCH | `/users/:id` | Update user | Admin |
-| DELETE | `/users/:id` | Delete user | Admin |
 
 ## Prerequisites
 
@@ -239,22 +278,29 @@ Press `Ctrl + C` to stop the app (or `docker compose down`).
 
 ## Run Tests
 
-### Using Docker
+### Unit Tests
+
+Unit tests use mocks for all dependencies (database, external APIs, etc.) and can be run locally without Docker:
+
+```bash
+npm test
+```
+
+### E2E Tests
+
+**Important:** E2E tests **require Docker** as they need a real PostgreSQL database instance. They cannot be run locally with `npm run test:e2e` unless you have PostgreSQL configured.
+
+**Using Docker (Recommended):**
 
 ```bash
 docker compose -f docker-compose.test.yml up --build --abort-on-container-exit
 docker compose -f docker-compose.test.yml down -v
 ```
 
-### Using NPM
-
-```bash
-# Unit tests
-npm test
-
-# E2E tests
-npm run test:e2e
-```
+This will:
+1. Start a PostgreSQL container
+2. Run all E2E tests against the real database
+3. Clean up containers after tests complete
 
 ## Things to Improve
 

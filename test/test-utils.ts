@@ -28,14 +28,26 @@ export class TestUtils {
       role?: string;
     },
   ): Promise<{ token: string; userId: string }> {
-    const response = await request(app.getHttpServer())
+    // First, register the user
+    const signupResponse = await request(app.getHttpServer())
       .post('/auth/signup')
       .send(userData)
       .expect(201);
 
+    const userId = signupResponse.body.data.user.id;
+
+    // Then, login to get the token
+    const loginResponse = await request(app.getHttpServer())
+      .post('/auth/login')
+      .send({
+        username: userData.username,
+        password: userData.password,
+      })
+      .expect(200);
+
     return {
-      token: response.body.data.access_token,
-      userId: response.body.data.user.id,
+      token: loginResponse.body.data.access_token,
+      userId: userId,
     };
   }
 
