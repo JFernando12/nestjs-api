@@ -5,6 +5,8 @@ import {
   MinLength,
   IsEnum,
   IsOptional,
+  Matches,
+  MaxLength,
 } from 'class-validator';
 import { ApiProperty } from '@nestjs/swagger';
 import { UserRole } from '../../../../common/interfaces';
@@ -22,12 +24,25 @@ export class SignUpDto {
   email: string;
 
   @ApiProperty({
-    example: 'User123',
-    description: 'Password (minimum 6 characters)',
+    example: 'User123!@#',
+    description:
+      'Password (8-50 characters, must contain at least one uppercase letter, one lowercase letter, one number, and one special character)',
   })
   @IsString()
   @IsNotEmpty()
-  @MinLength(6)
+  @MinLength(8, {
+    message: 'Password must be at least 8 characters long',
+  })
+  @MaxLength(50, {
+    message: 'Password must not exceed 50 characters',
+  })
+  @Matches(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&#])[A-Za-z\d@$!%*?&#]/,
+    {
+      message:
+        'Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character (@$!%*?&#)',
+    },
+  )
   password: string;
 
   @ApiProperty({
